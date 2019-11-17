@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.person_details.PersonDetailsActivity">
+    
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="@dimen/screen_person_photo_size"
+        android:layout_height="@dimen/screen_person_photo_size"
+        android:src="@drawable/ic_person_photo_placeholder"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/vertical_margin"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        style="@style/TextViewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/full_name"/>
+
+    <TextView
+        android:id="@+id/tvFullName"
+        style="@style/TextViewContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/full_names"/>
+
+    <TextView
+        style="@style/TextViewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"/>
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/TextViewContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@tools:sample/lorem"/>
+
+</LinearLayout>

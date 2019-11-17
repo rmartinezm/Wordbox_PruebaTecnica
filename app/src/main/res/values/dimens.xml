@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="half_lateral_margin">8dp</dimen>
+    <dimen name="lateral_margin">16dp</dimen>
+    <dimen name="double_lateral_margin">32dp</dimen>
+    <dimen name="half_vertical_margin">16dp</dimen>
+    <dimen name="vertical_margin">32dp</dimen>
+    <dimen name="double_vertical_margin">64dp</dimen>
+    <!-- IMAGE VIEW-->
+    <dimen name="splash_image_size">220dp</dimen>
+    <dimen name="item_person_photo_size">50dp</dimen>
+    <dimen name="screen_person_photo_size">120dp</dimen>
+    <!-- TEXT VIEW -->
+    <dimen name="label_text_size">18sp</dimen>
+    <dimen name="content_text_size">16sp</dimen>
+</resources>

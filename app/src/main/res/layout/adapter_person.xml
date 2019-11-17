@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="2dp"
+    android:layout_margin="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/lateral_margin"
+            android:layout_marginEnd="@dimen/lateral_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivPhoto"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:id="@+id/tvFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Full name"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/tvGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="MALE"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="@dimen/item_person_photo_size"
+            android:layout_height="@dimen/item_person_photo_size"
+            android:src="@drawable/ic_person_photo_placeholder"
+            android:layout_marginEnd="@dimen/lateral_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "io.arkstud.wordbox_roberto"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "String", 'CONNECTIVITY_CHANGE', "\"android.net.conn.CONNECTIVITY_CHANGE\""
+            buildConfigField "String", 'BASE_URL', "\"https://randomuser.me/api/\""
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", 'CONNECTIVITY_CHANGE', "\"android.net.conn.CONNECTIVITY_CHANGE\""
+            buildConfigField "String", 'BASE_URL', "\"https://randomuser.me/api/\""
+        }
+    }
+}
+
+configurations {
+    compile.exclude group: 'org.jetbrains.kotlinx', module: 'atomicfu-common'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation Dependencies.kotlinStandardLibrary
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation Dependencies.koinViewModel
+    // RETROFIT
+    implementation Dependencies.retrofit2
+    implementation Dependencies.retrofitConverterGson
+    implementation Dependencies.retrofitConverterMoshi
+    implementation Dependencies.retrofitCoroutinesAdapter
+    implementation Dependencies.retrofitLoggingInterceptor
+    // COROUTINES
+    implementation Dependencies.coroutinesCore
+    implementation Dependencies.coroutinesAndroid
+    // GLIDE
+    implementation Dependencies.glide
+    annotationProcessor Dependencies.glideCompiler
+    kapt Dependencies.glideCompiler
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
