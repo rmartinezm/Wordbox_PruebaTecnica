@@ -9,10 +9,14 @@ import retrofit2.http.Query
 
 interface PersonApiService {
 
-    @GET(".")
+    @GET(GET_PERSONS_ENDPOINT)
     fun getPersonsAsync(
-        @Query("results") results: Int
-        // @Query("callback") callback: String
+        @Query("results") results: Int,
+        @Query("callback") callback: String
     ): Deferred<GetPersonsResponse>
+
+    companion object {
+        const val GET_PERSONS_ENDPOINT: String = "."
+    }
 
 }
