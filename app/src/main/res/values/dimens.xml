@@ -8,8 +8,10 @@
     <dimen name="double_vertical_margin">64dp</dimen>
     <!-- IMAGE VIEW-->
     <dimen name="splash_image_size">220dp</dimen>
-    <dimen name="item_person_photo_size">50dp</dimen>
-    <dimen name="screen_person_photo_size">120dp</dimen>
+    <dimen name="item_person_photo_size">60dp</dimen>
+    <dimen name="screen_person_photo_size">160dp</dimen>
+    <dimen name="item_like_size">24dp</dimen>
+    <dimen name="screen_person_icon_size">48dp</dimen>
     <!-- TEXT VIEW -->
     <dimen name="label_text_size">18sp</dimen>
     <dimen name="content_text_size">16sp</dimen>

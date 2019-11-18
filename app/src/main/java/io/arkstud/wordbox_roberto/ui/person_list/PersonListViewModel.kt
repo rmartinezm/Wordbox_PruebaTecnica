@@ -8,6 +8,7 @@ import io.arkstud.wordbox_roberto.model.entity.Person
 import io.arkstud.wordbox_roberto.model.exception.NoInternetConnectionException
 import io.arkstud.wordbox_roberto.model.manager.ResourceManager
 import io.arkstud.wordbox_roberto.model.repository.person.PersonRepository
+import io.arkstud.wordbox_roberto.ui.common.NetworkState
 import kotlinx.coroutines.runBlocking
 
 class PersonListViewModel(private val personRepository: PersonRepository) : ViewModel() {
@@ -32,15 +33,6 @@ class PersonListViewModel(private val personRepository: PersonRepository) : View
             message = ResourceManager().getString(R.string.no_internet_connection_error)
             _networkState.postValue(NetworkState.ERROR)
         }
-    }
-
-    /**
-     *
-     */
-    enum class NetworkState {
-        LOADING,
-        ERROR,
-        LOADED;
     }
 
 }

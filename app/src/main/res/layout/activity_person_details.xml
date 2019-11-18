@@ -1,45 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.person_details.PersonDetailsActivity">
-    
+
+    <ImageView
+        android:id="@+id/ivCoverColor"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:src="@color/colorCoverFemale"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewInformation"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="@dimen/double_lateral_margin"
+        android:layout_marginEnd="@dimen/double_lateral_margin"
+        app:cardBackgroundColor="#E6FFFFFF"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivCoverColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/ivCoverColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/half_vertical_margin">
+
+            <TextView
+                android:id="@+id/tvFullName"
+                style="@style/TextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Roberto Martinez Medina"
+                android:textSize="22sp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="+52 55 7628 3222"
+                android:layout_gravity="center_horizontal"/>
+
+            <ImageView
+                android:id="@+id/ivLike"
+                android:layout_width="@dimen/screen_person_icon_size"
+                android:layout_height="@dimen/screen_person_icon_size"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/half_vertical_margin"
+                tools:src="@drawable/ic_border_like"
+                android:tint="@color/colorLike"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <ImageView
         android:id="@+id/ivPhoto"
         android:layout_width="@dimen/screen_person_photo_size"
         android:layout_height="@dimen/screen_person_photo_size"
         android:src="@drawable/ic_person_photo_placeholder"
+        android:transitionName="@string/transition_iv_photo"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/vertical_margin"
+        android:elevation="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cardViewInformation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardViewInformation"
         tools:ignore="ContentDescription"/>
 
-    <TextView
-        style="@style/TextViewLabel"
+    <ImageView
+        android:id="@+id/ivGender"
+        android:layout_width="@dimen/screen_person_icon_size"
+        android:layout_height="@dimen/screen_person_icon_size"
+        tools:src="@drawable/ic_man"
+        android:layout_marginEnd="@dimen/lateral_margin"
+        android:layout_marginTop="@dimen/half_vertical_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardViewInformation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_name"/>
+
+            <TextView
+                android:id="@+id/tvFirstName"
+                style="@style/TextViewContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/lorem"/>
+
+            <TextView
+                style="@style/TextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_name"/>
+
+            <TextView
+                android:id="@+id/tvLastName"
+                style="@style/TextViewContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/lorem"/>
+
+            <TextView
+                style="@style/TextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"/>
+
+            <TextView
+                android:id="@+id/tvEmail"
+                style="@style/TextViewContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/lorem"/>
+
+            <TextView
+                style="@style/TextViewLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender"/>
+
+            <TextView
+                android:id="@+id/tvGender"
+                style="@style/TextViewContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/lorem"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/full_name"/>
+        android:elevation="6dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/tvFullName"
-        style="@style/TextViewContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/full_names"/>
-
-    <TextView
-        style="@style/TextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"/>
-
-    <TextView
-        android:id="@+id/tvEmail"
-        style="@style/TextViewContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

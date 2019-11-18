@@ -1,24 +1,35 @@
 package io.arkstud.wordbox_roberto.ui.person_list
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.arkstud.wordbox_roberto.R
 import io.arkstud.wordbox_roberto.model.entity.Person
 import io.arkstud.wordbox_roberto.model.util.PERSON
+import io.arkstud.wordbox_roberto.model.util.PERSON_LIKE
+import io.arkstud.wordbox_roberto.model.util.REQUEST_CODE_LIKE
+import io.arkstud.wordbox_roberto.model.util.setOnActionClickListener
+import io.arkstud.wordbox_roberto.ui.common.NetworkState
+import io.arkstud.wordbox_roberto.ui.person_action.PersonActionViewModel
 import io.arkstud.wordbox_roberto.ui.person_details.PersonDetailsActivity
 import io.arkstud.wordbox_roberto.ui.person_list.adapter.PersonAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_person_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PersonListActivity : AppCompatActivity() {
 
     /* */
     private val personListViewModel: PersonListViewModel by viewModel()
+    private val personActionViewModel: PersonActionViewModel by viewModel()
+    private var clickedPerson: Person? = null
 
     /**
      *
@@ -26,10 +37,10 @@ class PersonListActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_person_list)
         initializeViews()
         observeViewModel()
-        personListViewModel.loadPersons()
+        loadPersons()
     }
 
     /**
@@ -37,8 +48,18 @@ class PersonListActivity : AppCompatActivity() {
      *
      */
     private fun initializeViews() {
+        supportActionBar?.title = getString(R.string.person_list)
         recyclerViewPersons?.layoutManager = LinearLayoutManager(this)
+        setOnActionClickListener(btnTryAgain) { loadPersons() }
+        swipeRefreshLayoutPersons?.setOnRefreshListener { loadPersons() }
+    }
 
+    /**
+     *
+     *
+     */
+    private fun loadPersons() = CoroutineScope(Dispatchers.IO).launch {
+        personListViewModel.loadPersons()
     }
 
     /**
@@ -49,50 +70,80 @@ class PersonListActivity : AppCompatActivity() {
         personListViewModel.persons.observe(this, Observer { updatePersonsList(it) })
         personListViewModel.networkState.observe(this, Observer {
             when(it){
-                PersonListViewModel.NetworkState.LOADING -> {
+                NetworkState.LOADING -> {
+                    linearLayoutMessage?.visibility = View.GONE
                     progressBar?.visibility = View.VISIBLE
-                    tvMessage.text = getString(R.string.loading)
-                    tvMessage?.visibility = View.VISIBLE
                 }
-                PersonListViewModel.NetworkState.ERROR -> {
+                NetworkState.ERROR -> {
                     progressBar?.visibility = View.GONE
+                    updatePersonsList(listOf())
                     tvMessage.text = personListViewModel.message
-                    tvMessage?.visibility = View.VISIBLE
+                    linearLayoutMessage?.visibility = View.VISIBLE
                 }
-                PersonListViewModel.NetworkState.LOADED, null -> {
+                NetworkState.LOADED, null -> {
                     progressBar?.visibility = View.GONE
-                    tvMessage?.visibility = View.GONE
+                    linearLayoutMessage?.visibility = View.GONE
                 }
             }
         })
     }
-
-
 
     /**
      *
      * @param list
      */
     private fun updatePersonsList(list: List<Person>) {
+        swipeRefreshLayoutPersons?.isRefreshing = false
         if(list.isEmpty()) {
             tvMessage?.text = getString(R.string.empty_persons_list)
             tvMessage?.visibility = View.VISIBLE
             recyclerViewPersons?.adapter = null
         } else {
             tvMessage?.visibility = View.GONE
-            recyclerViewPersons?.adapter = PersonAdapter(list) { navigateToPersonDetails(it) }
+            recyclerViewPersons?.adapter = PersonAdapter(
+                list,
+                onPersonActionClickListener = { person, viewHolder ->
+                    clickedPerson = person
+                    navigateToPersonDetails(person, viewHolder)
+                },
+                onLikePersonActionClickListener = {
+                    personActionViewModel.launchLikeAction(it)
+                    recyclerViewPersons?.adapter?.notifyDataSetChanged()
+                }
+            )
         }
     }
 
     /**
      *
      * @param person
+     * @param viewHolder
      */
-    private fun navigateToPersonDetails(person: Person) {
+    private fun navigateToPersonDetails(person: Person, viewHolder: PersonAdapter.ViewHolder) {
         val intent = Intent(this, PersonDetailsActivity::class.java).apply {
             putExtra(PERSON, person)
         }
-        startActivity(intent)
+        val options: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            this,
+            viewHolder.ivPhoto ?: return,
+            getString(R.string.transition_iv_photo)
+        )
+        startActivityForResult(intent, REQUEST_CODE_LIKE, options.toBundle())
+    }
+
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE_LIKE && resultCode == Activity.RESULT_OK){
+            val likeValue = data?.getBooleanExtra(PERSON_LIKE, false)
+            clickedPerson?.liked = likeValue ?: false
+            recyclerViewPersons?.adapter?.notifyDataSetChanged()
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import io.arkstud.wordbox_roberto.R
 import io.arkstud.wordbox_roberto.model.entity.Person
 import io.arkstud.wordbox_roberto.model.util.glide.getDefaultLoaderOptions
@@ -16,13 +17,15 @@ import io.arkstud.wordbox_roberto.model.util.setOnActionClickListener
 /**
  *
  * @param persons
- * @param personClickListener
+ * @param onPersonActionClickListener
  */
 class PersonAdapter(
     private val persons: List<Person>,
-    private val personClickListener: (person: Person) -> Unit
+    private val onPersonActionClickListener: (person: Person, viewHolder: ViewHolder) -> Unit,
+    private val onLikePersonActionClickListener: (person: Person) -> Unit
 ): RecyclerView.Adapter<PersonAdapter.ViewHolder>() {
 
+    /* */
     private lateinit var context: Context
 
     /**
@@ -31,8 +34,10 @@ class PersonAdapter(
      */
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvFullName: TextView? = itemView.findViewById(R.id.tvFullName)
-        val tvGender: TextView? = itemView.findViewById(R.id.tvGender)
-        val ivPhoto: ImageView = itemView.findViewById(R.id.ivPhoto)
+        val tvPhone: TextView? = itemView.findViewById(R.id.tvPhone)
+        val ivGender: ImageView? = itemView.findViewById(R.id.ivGender)
+        val ivPhoto: ImageView? = itemView.findViewById(R.id.ivPhoto)
+        val ivLike: ImageView? = itemView.findViewById(R.id.ivLike)
     }
 
     /**
@@ -50,12 +55,22 @@ class PersonAdapter(
         val person = persons[position]
         with(holder) {
             tvFullName?.text = person.fullName
-            tvGender?.text = person.gender.toString()
+            tvPhone?.text = person.phone
+            ivGender?.setImageResource(when(person.gender){
+                Person.Gender.MALE -> R.drawable.ic_man
+                Person.Gender.FEMALE -> R.drawable.ic_woman
+                Person.Gender.UNKNOWN -> android.R.color.white
+            })
+            ivLike?.setImageResource(
+                if(person.liked) R.drawable.ic_fill_like else R.drawable.ic_border_like
+            )
             Glide.with(context)
-                .load(person.picture.medium)
+                .load(person.picture.large)
                 .apply(getDefaultLoaderOptions(context))
-                .into(ivPhoto)
-            setOnActionClickListener(itemView){ personClickListener(person) }
+                .apply(RequestOptions.circleCropTransform())
+                .into(ivPhoto ?: return)
+            setOnActionClickListener(itemView){ onPersonActionClickListener(person, this) }
+            setOnActionClickListener(ivLike){ onLikePersonActionClickListener(person) }
         }
     }
 
@@ -68,7 +83,6 @@ class PersonAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = with(parent.context) {
         context = this
         ViewHolder(LayoutInflater.from(this).inflate(R.layout.adapter_person, parent, false))
-
     }
 
 }

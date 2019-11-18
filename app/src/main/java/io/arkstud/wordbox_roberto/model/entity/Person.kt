@@ -10,7 +10,9 @@ data class Person (
     var lastName: String? = null,
     var gender: Gender,
     var email: String,
-    var picture: PersonPicture
+    var picture: PersonPicture,
+    var phone: String,
+    var liked: Boolean
 ) : Serializable {
 
     val fullName: String get() = "$title $firstName $lastName"
@@ -22,7 +24,9 @@ data class Person (
             it.name.last,
             Gender.fromString(it.gender),
             it.email,
-            it.picture
+            it.picture,
+            it.phone,
+            false
         )
     }
 

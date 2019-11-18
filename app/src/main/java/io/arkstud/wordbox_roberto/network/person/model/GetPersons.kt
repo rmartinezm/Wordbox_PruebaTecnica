@@ -18,7 +18,8 @@ data class PersonResponse (
     var name: PersonName,
     var gender: String,
     var email: String,
-    var picture: PersonPicture
+    var picture: PersonPicture,
+    var phone: String
 )
 
 data class PersonPicture (
